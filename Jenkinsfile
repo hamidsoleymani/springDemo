@@ -1,6 +1,23 @@
 pipeline {
     agent any
 
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh './mvnw clean package'
+            }
+        }
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
+    }
+}
+
+
     tools {
         maven 'Maven 3.9.6' // Define in Jenkins tools config.
     }
