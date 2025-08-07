@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9.6' // Define in Jenkins tools config
+        maven 'Maven 3.9.6' // Define in Jenkins tools config.
     }
 
     environment {
