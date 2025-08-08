@@ -1,45 +1,30 @@
 pipeline {
     agent any
 
-pipeline {
-    agent any
-    stages {
-        stage('Build') {
-            steps {
-                sh './mvnw clean package'
-            }
-        }
-        stage('Archive') {
-            steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-            }
-        }
-    }
-}
-
-
     tools {
-        maven 'Maven 3.9.6' // Define in Jenkins tools config.
+        maven 'Maven 3.9.9' // Install via Jenkins -> Global Tool Configuration
+        jdk 'JDK 17'        // Install via Jenkins -> Global Tool Configuration
     }
 
-    environment {
-        MAVEN_OPTS = "-Dmaven.repo.local=.m2/repository"
+    triggers {
+        githubPush()
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/hamidsoleymani/springDemo.git'
+                git branch: 'main',
+                    url: 'https://github.com/hamidsoleymani/springDemo.git'
             }
         }
         stage('Build') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh 'mvn clean install'
             }
         }
-        stage('Publish to Nexus') {
+        stage('Test') {
             steps {
-                sh 'mvn deploy -DskipTests'
+                sh 'mvn test'
             }
         }
     }
