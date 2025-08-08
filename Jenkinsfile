@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven 3.9.9' // Install via Jenkins -> Global Tool Configuration
-        jdk 'JDK 17'        // Install via Jenkins -> Global Tool Configuration
-    }
-
     triggers {
         githubPush()
     }
@@ -19,12 +14,12 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                sh './mvnw clean install'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                sh './mvnw test'
             }
         }
     }
