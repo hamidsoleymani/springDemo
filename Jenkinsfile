@@ -7,13 +7,7 @@ pipeline {
         DOCKER_IMAGE = "myapp:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                // Checkout code from the branch that triggered the build
-                checkout scm
-            }
-        }
+
 
         stage('Build') {
             steps {
@@ -29,42 +23,11 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
-            steps {
-                // Build Docker image
-                sh "docker build -t ${DOCKER_IMAGE} ."
-            }
-        }
 
-        stage('Push Docker Image..') {
-            when {
-                branch 'main'  // Only push images from main branch
-            }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh """
-                        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                        docker push ${DOCKER_IMAGE}
-                    """
-                }
-            }
-        }
 
-        stage('Deploy to Kubernetes') {
-            when {
-                anyOf {
-                    branch 'main'
-                    branch 'develop'
-                }
-            }
-            steps {
-                script {
-                    def envFolder = (env.BRANCH_NAME == 'main') ? 'prod' : 'dev'
-                    sh "kubectl apply -f k8s/${envFolder}/"
-                }
-            }
-        }
-    }
+
+
+
 
     post {
         success {
