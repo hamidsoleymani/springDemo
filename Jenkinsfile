@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Optional: specify Java 21 if needed
+        // Optional: specify Java 21 if needed.
         JAVA_HOME = "/usr/lib/jvm/java-21"
         DOCKER_IMAGE = "myapp:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
     }
