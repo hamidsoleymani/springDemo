@@ -11,6 +11,6 @@ public class HelloController {
 
     @GetMapping("/zeit")
     public String time() {
-       return LocalDateTime.now().toString();
+       return "Hamid: " + LocalDateTime.now();
     }
 }
