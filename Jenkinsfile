@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Push Docker Image hamid') {
             when {
                 branch 'main'  // Only push images from main branch
             }
